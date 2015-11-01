@@ -4,7 +4,7 @@
 
   <groupId>org.opentelecoms.sdp</groupId>
   <artifactId>sdp-api</artifactId>
-  <version>1.0</version>
+  <version>1.0.1</version>
   <packaging>bundle</packaging>
 
   <name>sdp-api</name>
