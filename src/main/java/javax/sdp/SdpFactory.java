@@ -19,78 +19,83 @@ import java.net.URL;
 import java.util.Date;
 import java.util.Vector;
 
-public interface SdpFactory {
+public abstract class SdpFactory {
 
-	SessionDescription createSessionDescription() throws SdpException;
+	public abstract SessionDescription createSessionDescription() throws SdpException;
 
-	SessionDescription createSessionDescription(String s)
+	public abstract SessionDescription createSessionDescription(String s)
 			throws SdpParseException;
 
-	BandWidth createBandwidth(String modifier, int value);
+	public abstract BandWidth createBandwidth(String modifier, int value);
 
-	Attribute createAttribute(String name, String value);
+	public abstract Attribute createAttribute(String name, String value);
 
-	Info createInfo(String value);
+	public abstract Info createInfo(String value);
 
-	Phone createPhone(String value);
+	public abstract Phone createPhone(String value);
 
-	EMail createEMail(String value);
+	public abstract EMail createEMail(String value);
 
-	URI createURI(URL value) throws SdpException;
+	public abstract URI createURI(URL value) throws SdpException;
 
-	SessionName createSessionName(String name);
+	public abstract SessionName createSessionName(String name);
 
-	Key createKey(String method, String key);
+	public abstract Key createKey(String method, String key);
 
-	Version createVersion(int value);
+	public abstract Version createVersion(int value);
 
-	Media createMedia(String media, int port, int numPorts, String transport,
+	public abstract Media createMedia(String media, int port, int numPorts, String transport,
 			Vector staticRtpAvpTypes) throws SdpException;
 
-	Origin createOrigin(String userName, String address) throws SdpException;
+	public abstract Origin createOrigin(String userName, String address) throws SdpException;
 
-	Origin createOrigin(String userName, long sessionId, long sessionVersion,
+	public abstract Origin createOrigin(String userName, long sessionId, long sessionVersion,
 			String networkType, String addrType, String address)
 			throws SdpException;
 
-	MediaDescription createMediaDescription(String media, int port,
+	public abstract MediaDescription createMediaDescription(String media, int port,
 			int numPorts, String transport, int[] staticRtpAvpTypes)
 			throws IllegalArgumentException, SdpException;
 
-	MediaDescription createMediaDescription(String media, int port,
+	public abstract MediaDescription createMediaDescription(String media, int port,
 			int numPorts, String transport, String[] formats);
 
-	TimeDescription createTimeDescription(Time t) throws SdpException;
+	public abstract TimeDescription createTimeDescription(Time t) throws SdpException;
 
-	TimeDescription createTimeDescription() throws SdpException;
+	public abstract TimeDescription createTimeDescription() throws SdpException;
 
-	TimeDescription createTimeDescription(Date start, Date stop)
+	public abstract TimeDescription createTimeDescription(Date start, Date stop)
 			throws SdpException;
 
-	String formatMulticastAddress(String addr, int ttl, int numAddrs);
+	public abstract String formatMulticastAddress(String addr, int ttl, int numAddrs);
 
-	Connection createConnection(String netType, String addrType, String addr,
+	public abstract Connection createConnection(String netType, String addrType, String addr,
 			int ttl, int numAddrs) throws SdpException;
 
-	Connection createConnection(String netType, String addrType, String addr)
+	public abstract Connection createConnection(String netType, String addrType, String addr)
 			throws SdpException;
 
-	Connection createConnection(String addr, int ttl, int numAddrs)
+	public abstract Connection createConnection(String addr, int ttl, int numAddrs)
 			throws SdpException;
 
-	Connection createConnection(String addr) throws SdpException;
+	public abstract Connection createConnection(String addr) throws SdpException;
 
-	Time createTime(Date start, Date stop) throws SdpException;
+	public abstract Time createTime(Date start, Date stop) throws SdpException;
 
-	Time createTime() throws SdpException;
+	public abstract Time createTime() throws SdpException;
 
-	RepeatTime createRepeatTime(int repeatInterval, int activeDuration,
+	public abstract RepeatTime createRepeatTime(int repeatInterval, int activeDuration,
 			int[] offsets);
 
-	TimeZoneAdjustment createTimeZoneAdjustment(Date d, int offset);
+	public abstract TimeZoneAdjustment createTimeZoneAdjustment(Date d, int offset);
 
-	Date getDateFromNtp(long ntpTime);
+	public static Date getDateFromNtp(long ntpTime) {
+		return new Date((ntpTime - SdpConstants.NTP_CONST) * 1000);
+	}
 
-	long getNtpTime(Date d) throws SdpParseException;
-
+	public static long getNtpTime(Date d) throws SdpParseException {
+		if (d == null)
+			return -1;
+		return ((d.getTime() / 1000) + SdpConstants.NTP_CONST);
+	}
 }
